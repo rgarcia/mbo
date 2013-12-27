@@ -69,6 +69,7 @@ func (cmd *Ls) Run() {
 		"Day",
 		"Start Time",
 		"Sign Up",
+		"Class ID",
 		"Class Name",
 		"Trainer Name",
 		"Assistant",
@@ -101,10 +102,20 @@ func (cmd *Ls) Run() {
 			log.Println("Error, nil day", i, class, html)
 			return
 		}
+
+		// Find a signup button--this contains class ID
+		// <input type="button" name="but169" class="SignupButton" ...
+		signup := s.Find("input.SignupButton")
+		classID := ""
+		if signup.Length() != 0 {
+			classID, _ = signup.Attr("name")
+			classID = classID[3:]
+		}
 		fmt.Fprintln(w, strings.Join([]string{
 			day.Format("Mon Jan 2"),
 			strip(s.Find("td:nth-child(1)").Text()),
 			strip(s.Find("td:nth-child(2)").Text()),
+			classID,
 			strip(s.Find("td:nth-child(3)").Text()),
 			strip(s.Find("td:nth-child(4)").Text()),
 			strip(s.Find("td:nth-child(5)").Text()),
