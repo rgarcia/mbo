@@ -7,5 +7,6 @@ func main() {
 		new(Ls),
 		new(Register),
 		new(Schedule),
+		new(Cancel),
 	)
 }
