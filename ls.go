@@ -15,19 +15,17 @@ import (
 )
 
 type Ls struct {
-	Date    *string
-	ClassID *string
+	Date *string
 }
 
 func (cmd *Ls) Name() string { return "ls" }
 func (cmd *Ls) DefineFlags(fs *flag.FlagSet) {
-	cmd.Date = fs.String("date", "<today>", "list classes as of this date. Format is MM/DD/YYYY")
-	cmd.ClassID = fs.String("classid", "0", "Class ID")
+	cmd.Date = fs.String("date", "", "list classes as of this date. Format is MM/DD/YYYY. Default is today.")
 }
 func (cmd *Ls) Run() {
 	log.SetOutput(LogOutput())
 
-	if *cmd.Date == "<today>" {
+	if *cmd.Date == "" {
 		timestr := time.Now().Format("02/01/2006")
 		cmd.Date = &timestr
 	}
@@ -45,8 +43,7 @@ func (cmd *Ls) Run() {
 
 	// List classes
 	resp, err := client.Get(fmt.Sprintf("%s/ASP/main_class.asp?%s", MBO_URL, url.Values{
-		"date":    []string{*cmd.Date},
-		"classid": []string{*cmd.ClassID},
+		"date": []string{*cmd.Date},
 	}.Encode()))
 	if err != nil {
 		panic(err)

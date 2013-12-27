@@ -30,8 +30,7 @@ Usage of mbo:
 
 
 # mbo ls
-  -classid="0": Class ID
-  -date="<today>": list classes as of this date. Format is MM/DD/YYYY
+  -date="": list classes as of this date. Format is MM/DD/YYYY. Default is today.
 
 
 # mbo register
