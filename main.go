@@ -6,5 +6,6 @@ func main() {
 		new(Logout),
 		new(Ls),
 		new(Register),
+		new(Schedule),
 	)
 }

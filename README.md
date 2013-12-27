@@ -36,4 +36,7 @@ Usage of mbo:
 # mbo register
   -date="": Class date
   -id="": Class ID
+
+
+# mbo schedule
 ```
