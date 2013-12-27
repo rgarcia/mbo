@@ -10,6 +10,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"os"
+	"regexp"
 	"strings"
 	"text/tabwriter"
 	"time"
@@ -66,6 +67,7 @@ func (cmd *Schedule) Run() {
 		"Time",
 		"Class",
 		"Coach",
+		"Visit ID",
 	}
 	fmt.Fprintln(w, strings.Join(header, "\t"))
 	doc, _ := goquery.NewDocumentFromReader(bytes.NewReader(body.Bytes()))
@@ -74,11 +76,25 @@ func (cmd *Schedule) Run() {
 		if err != nil {
 			log.Println("Could not parse time from", Strip(s.Find("td.dateCell").Text()))
 		}
+
+		// Find Visit ID in cancel cell
+		// <a href="javascript:jsConfirm(44270, 1)">Cancel</a>
+		visitID := ""
+		html, _ := s.Find("td.cancelCell").Html()
+		re := regexp.MustCompile("jsConfirm\\((\\d+),")
+		submatch := re.FindStringSubmatch(html)
+		log.Println("submatch", submatch)
+		if len(submatch) == 0 {
+			log.Println("could not find visit id", re, html)
+		} else {
+			visitID = submatch[1]
+		}
 		fmt.Fprintln(w, strings.Join([]string{
 			day.Format("Mon Jan 2"),
 			Strip(s.Find("td.timeCell").Text()),
 			Strip(s.Find("td.classNameCell").Text()),
 			Strip(s.Find("td.teacherCell").Text()),
+			visitID,
 		}, "\t"))
 	})
 	w.Flush()
