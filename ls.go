@@ -51,6 +51,7 @@ func (cmd *Ls) Run() {
 	if err != nil {
 		panic(err)
 	}
+	defer resp.Body.Close()
 
 	// Detect logged in welcome message
 	doc, _ := goquery.NewDocumentFromReader(resp.Body)

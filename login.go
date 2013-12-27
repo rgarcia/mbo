@@ -84,6 +84,7 @@ func (cmd *Login) Run() {
 	if err != nil {
 		panic(err)
 	}
+	defer resp.Body.Close()
 
 	var data map[string]interface{}
 	decoder := json.NewDecoder(resp.Body)
