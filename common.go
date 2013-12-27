@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"encoding/gob"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 )
 
 // MBO_URL is the base url for the MINDBODY Online client portal.
@@ -46,4 +49,19 @@ func LogOutput() (logOutput io.Writer) {
 		}
 	}
 	return
+}
+
+// IsLoggedIn detects if the user is logged in. Pass it any html on a logged in page.
+func IsLoggedIn(html []byte) bool {
+	doc, _ := goquery.NewDocumentFromReader(bytes.NewReader(html))
+	selection := doc.Find("#top-wel-sp")
+	if selection.Length() != 1 {
+		return false
+	}
+	return true
+}
+
+// Strip strips the result of goquery.Text(), removing leading/trailing whitespace and nbsp's
+func Strip(str string) string {
+	return strings.Replace(strings.TrimSpace(str), " ", " ", -1)
 }

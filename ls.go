@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
@@ -46,14 +47,20 @@ func (cmd *Ls) Run() {
 		"date": []string{*cmd.Date},
 	}.Encode()))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	defer resp.Body.Close()
 
+	// Read into buffer so it can be read multiple times
+	var body bytes.Buffer
+	if _, err := body.ReadFrom(resp.Body); err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	// Detect logged in welcome message
-	doc, _ := goquery.NewDocumentFromReader(resp.Body)
-	selection := doc.Find("#top-wel-sp")
-	if selection.Length() != 1 {
+	if !IsLoggedIn(body.Bytes()) {
 		fmt.Println("Session has expired; please log in again.")
 		return
 	}
@@ -74,16 +81,12 @@ func (cmd *Ls) Run() {
 	}
 	fmt.Fprintln(w, strings.Join(header, "\t"))
 
-	// Strip leading/trailing whitespace and nbsp's
-	strip := func(str string) string {
-		return strings.Replace(strings.TrimSpace(str), " ", " ", -1)
-	}
-
 	var day *time.Time
+	doc, _ := goquery.NewDocumentFromReader(bytes.NewReader(body.Bytes()))
 	doc.Find("#classSchedule-mainTable tr").Each(func(i int, s *goquery.Selection) {
 		class, _ := s.Attr("class")
 		if class != "evenRow" && class != "oddRow" {
-			str := strip(s.Text())
+			str := Strip(s.Text())
 			log.Printf("Header text: '%s'", str)
 			time, err := time.Parse("Mon January 02, 2006", str)
 			if err == nil {
@@ -110,16 +113,14 @@ func (cmd *Ls) Run() {
 		}
 		fmt.Fprintln(w, strings.Join([]string{
 			day.Format("Mon Jan 2"),
-			strip(s.Find("td:nth-child(1)").Text()),
-			strip(s.Find("td:nth-child(2)").Text()),
+			Strip(s.Find("td:nth-child(1)").Text()),
+			Strip(s.Find("td:nth-child(2)").Text()),
 			classID,
-			strip(s.Find("td:nth-child(3)").Text()),
-			strip(s.Find("td:nth-child(4)").Text()),
-			strip(s.Find("td:nth-child(5)").Text()),
-			strip(s.Find("td:nth-child(6)").Text()),
+			Strip(s.Find("td:nth-child(3)").Text()),
+			Strip(s.Find("td:nth-child(4)").Text()),
+			Strip(s.Find("td:nth-child(5)").Text()),
+			Strip(s.Find("td:nth-child(6)").Text()),
 		}, "\t"))
 	})
 	w.Flush()
-
-	return
 }
