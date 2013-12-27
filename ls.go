@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/gob"
 	"flag"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
@@ -34,17 +33,9 @@ func (cmd *Ls) Run() {
 	}
 
 	// Load session
-	file, err := os.Open(fmt.Sprintf("%s/.mindbodyonline", os.Getenv("HOME")))
+	mboSession, err := LoadMBOSession()
 	if err != nil {
-		fmt.Println("Must be logged in.")
-		return
-	}
-	defer file.Close()
-	dec := gob.NewDecoder(file)
-	var mboSession MBOSession
-	err = dec.Decode(&mboSession)
-	if err != nil {
-		fmt.Println("Must be logged in.")
+		fmt.Println(err)
 		return
 	}
 	cookieJar, _ := cookiejar.New(nil)

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/gob"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -14,6 +16,20 @@ const MBO_URL = "https://clients.mindbodyonline.com"
 type MBOSession struct {
 	Cookies  []*http.Cookie
 	StudioID string
+}
+
+func LoadMBOSession() (mboSession MBOSession, err error) {
+	file, err := os.Open(fmt.Sprintf("%s/.mindbodyonline", os.Getenv("HOME")))
+	if err != nil {
+		return mboSession, fmt.Errorf("Must be logged in.")
+	}
+	defer file.Close()
+	dec := gob.NewDecoder(file)
+	err = dec.Decode(&mboSession)
+	if err != nil {
+		return mboSession, fmt.Errorf("Must be logged in.")
+	}
+	return mboSession, nil
 }
 
 // LogOutput determines where we should send logs (if anywhere).
