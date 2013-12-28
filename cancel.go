@@ -13,7 +13,8 @@ type Cancel struct {
 	VisitID *string
 }
 
-func (cmd *Cancel) Name() string { return "cancel" }
+func (cmd *Cancel) Name() string     { return "cancel" }
+func (cmd *Cancel) Synopsis() string { return "Cancel a visit" }
 func (cmd *Cancel) DefineFlags(fs *flag.FlagSet) {
 	cmd.VisitID = fs.String("visitid", "", "Visit ID to cancel.")
 }

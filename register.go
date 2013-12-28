@@ -16,7 +16,8 @@ type Register struct {
 	Date *string
 }
 
-func (cmd *Register) Name() string { return "register" }
+func (cmd *Register) Name() string     { return "register" }
+func (cmd *Register) Synopsis() string { return "Register for a class" }
 func (cmd *Register) DefineFlags(fs *flag.FlagSet) {
 	cmd.ID = fs.String("id", "", "Class ID")
 	cmd.Date = fs.String("date", "", "Class date")

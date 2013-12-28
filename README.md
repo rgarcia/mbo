@@ -19,24 +19,11 @@ sudo cp $GOPATH/bin/mbo /usr/local/bin/
 ```
 $ mbo -h
 Usage of mbo:
-
-# mbo login
-  -p="": Password. Will prompt if not passed.
-  -studio="": Studio ID. Will prompt if not passed.
-  -u="": Username. Will prompt if not passed.
-
-
-# mbo logout
-
-
-# mbo ls
-  -date="": list classes as of this date. Format is MM/DD/YYYY. Default is today.
-
-
-# mbo register
-  -date="": Class date
-  -id="": Class ID
-
-
-# mbo schedule
+Commands:
+   login     Start a session with MBO
+   logout    End session with MBO
+   ls        List classes
+   register  Register for a class
+   schedule  Show your schedule
+   cancel    Cancel a visit
 ```

@@ -20,7 +20,8 @@ type Login struct {
 	StudioID *string
 }
 
-func (cmd *Login) Name() string { return "login" }
+func (cmd *Login) Name() string     { return "login" }
+func (cmd *Login) Synopsis() string { return "Start a session with MBO" }
 func (cmd *Login) DefineFlags(fs *flag.FlagSet) {
 	cmd.Username = fs.String("u", "", "Username. Will prompt if not passed.")
 	cmd.Password = fs.String("p", "", "Password. Will prompt if not passed.")

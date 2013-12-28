@@ -5,10 +5,12 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"text/tabwriter"
 )
 
 type SubCommand interface {
 	Name() string
+	Synopsis() string
 	DefineFlags(*flag.FlagSet)
 	Run()
 }
@@ -29,11 +31,13 @@ func Parse(commands ...SubCommand) {
 	oldUsage := flag.Usage
 	flag.Usage = func() {
 		oldUsage()
+		fmt.Fprintf(os.Stderr, "Commands:\n")
+		w := new(tabwriter.Writer)
+		w.Init(os.Stderr, 10, 0, 2, ' ', 0)
 		for name, sc := range scp {
-			fmt.Fprintf(os.Stderr, "\n# %s %s\n", os.Args[0], name)
-			sc.fs.PrintDefaults()
-			fmt.Fprintf(os.Stderr, "\n")
+			fmt.Fprintf(w, "   %s\t%s\n", name, sc.cmd.Synopsis())
 		}
+		w.Flush()
 	}
 
 	flag.Parse()

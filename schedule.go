@@ -19,7 +19,8 @@ import (
 type Schedule struct {
 }
 
-func (cmd *Schedule) Name() string { return "schedule" }
+func (cmd *Schedule) Name() string     { return "schedule" }
+func (cmd *Schedule) Synopsis() string { return "Show your schedule" }
 func (cmd *Schedule) DefineFlags(fs *flag.FlagSet) {
 }
 func (cmd *Schedule) Run() {

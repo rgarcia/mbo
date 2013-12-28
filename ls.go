@@ -19,7 +19,8 @@ type Ls struct {
 	Date *string
 }
 
-func (cmd *Ls) Name() string { return "ls" }
+func (cmd *Ls) Name() string     { return "ls" }
+func (cmd *Ls) Synopsis() string { return "List classes" }
 func (cmd *Ls) DefineFlags(fs *flag.FlagSet) {
 	cmd.Date = fs.String("date", "", "list classes as of this date. Format is MM/DD/YYYY. Default is today.")
 }
