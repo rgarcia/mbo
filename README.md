@@ -26,3 +26,7 @@ Commands:
    schedule  Show your schedule
    cancel    Cancel a visit
 ```
+
+## Example
+
+![](https://raw.github.com/rgarcia/mbo/master/mbo.gif)
