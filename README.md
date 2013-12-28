@@ -1,7 +1,6 @@
 # mbo
 
-A command-line interface to the client website of [MINDBODY Online](https://clients.mindbodyonline.com)
-Allows you to browse and register for classes from the command line.
+A command-line interface to [MINDBODY Online](https://clients.mindbodyonline.com), a website people use to reserve spots in gym classes.
 
 ## Installation
 
