@@ -73,7 +73,7 @@ func (cmd *Schedule) Run() {
 	fmt.Fprintln(w, strings.Join(header, "\t"))
 	doc, _ := goquery.NewDocumentFromReader(bytes.NewReader(body.Bytes()))
 	doc.Find("#mySchTable tr.scheduleRow").Each(func(i int, s *goquery.Selection) {
-		day, err := time.Parse("Mon 01/02/2006", Strip(s.Find("td.dateCell").Text()))
+		day, err := time.Parse("Mon 1/2/2006", Strip(s.Find("td.dateCell").Text()))
 		if err != nil {
 			log.Println("Could not parse time from", Strip(s.Find("td.dateCell").Text()))
 		}
