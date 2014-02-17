@@ -1,6 +1,6 @@
 # mbo
 
-A command-line interface to [MINDBODY Online](https://clients.mindbodyonline.com), a website people use to reserve spots in gym classes.
+A command-line interface to [MINDBODY Online](https://clients.mindbodyonline.com), a website I use to reserve spots in gym classes.
 
 ## Installation
 
@@ -30,6 +30,10 @@ Commands:
 ```
 
 Pass `-h` to any subcommand for more information.
+
+## Automate it
+
+The script `cron.sh` contains an example script that will automatically check for a class at a certain time and register for it.
 
 ## Example
 
