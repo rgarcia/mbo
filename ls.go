@@ -118,7 +118,7 @@ func (cmd *Ls) Run() {
 			return
 		}
 		fmt.Fprintln(w, strings.Join([]string{
-			day.Format("Mon Jan 2"),
+			day.Format("Mon Jan 02"),
 			Strip(s.Find("td:nth-child(1)").Text()),
 			Strip(s.Find("td:nth-child(2)").Text()),
 			classID,
