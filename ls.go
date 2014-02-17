@@ -17,12 +17,14 @@ import (
 
 type Ls struct {
 	Date *string
+	Open *bool
 }
 
 func (cmd *Ls) Name() string     { return "ls" }
 func (cmd *Ls) Synopsis() string { return "List classes" }
 func (cmd *Ls) DefineFlags(fs *flag.FlagSet) {
 	cmd.Date = fs.String("date", "", "list classes as of this date. Format is MM/DD/YYYY. Default is today.")
+	cmd.Open = fs.Bool("open", false, "list classes that are open for registration only.")
 }
 func (cmd *Ls) Run() {
 	log.SetOutput(LogOutput())
@@ -111,6 +113,9 @@ func (cmd *Ls) Run() {
 		if signup.Length() != 0 {
 			classID, _ = signup.Attr("name")
 			classID = classID[3:]
+		}
+		if *cmd.Open && classID == "" {
+			return
 		}
 		fmt.Fprintln(w, strings.Join([]string{
 			day.Format("Mon Jan 2"),
